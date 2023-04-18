@@ -53,7 +53,7 @@ const APIs = (() => {
     return fetch('http://localhost:3000/todos').then((res) => res.json());
   };
 
-  const updateTodo = (data, id) => {
+  const updateTodo = (data, completed, id) => {
     console.log(data);
     return fetch('http://localhost:3000/todos/' + id, {
       method: 'PATCH',
@@ -62,6 +62,7 @@ const APIs = (() => {
       },
       body: JSON.stringify({
         content: data,
+        completed: completed,
       }),
     })
       .then((response) => response.json())
@@ -125,13 +126,7 @@ const Model = (() => {
       this.#completedTodos.push(this.#todos[index]);
       this.#onChange?.();
       console.log(typeof id);
-      updateTodo(
-        {
-          content: this.#todos[index].content,
-          completed: this.#todos[index].completed,
-        },
-        id
-      );
+      updateTodo(this.#todos[index].content, this.#todos[index].completed, id);
     }
 
     toggleCompletedTodo(id) {
@@ -147,10 +142,8 @@ const Model = (() => {
       this.#onChange?.();
       console.log(typeof id);
       updateTodo(
-        {
-          content: this.#completedTodos[index].content,
-          completed: this.#completedTodos[index].completed,
-        },
+        this.#completedTodos[index].content,
+        this.#completedTodos[index].completed,
         id
       );
     }
@@ -300,7 +293,7 @@ const Controller = ((view, model) => {
         if (edited == 'true') {
           span.setAttribute('contenteditable', 'false');
           console.log('text = ', span.innerText);
-          model.updateTodo(span.innerText, id);
+          model.updateTodo(span.innerText, 'false', id);
         } else {
           span.setAttribute('contenteditable', 'true');
         }
@@ -321,7 +314,7 @@ const Controller = ((view, model) => {
         if (edited == 'true') {
           span.setAttribute('contenteditable', 'false');
           console.log('text = ', span.innerText);
-          model.updateTodo(span.innerText, id);
+          model.updateTodo(span.innerText, 'true', id);
         } else {
           span.setAttribute('contenteditable', 'true');
         }

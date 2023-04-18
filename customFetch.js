@@ -1,4 +1,4 @@
-export const Fetch = (url, options = {}) => {
+/*export const Fetch = (url, options = {}) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     let method = 'GET' || options.method;
@@ -28,5 +28,32 @@ export const Fetch = (url, options = {}) => {
       });
     };
     xhr.send(options.body);
+  });
+}; */
+
+export const Fetch = (url, options = {}) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    let method = 'GET' || options.method;
+    xhr.open(method, url);
+    if (options.headers) {
+      Object.keys(options.headers).forEach((key) => {
+        xhr.setRequestHeader(key, options.headers[key]);
+      });
+    }
+
+    function onLoadListener() {
+      var data = JSON.parse(this.responseText);
+      console.log(data);
+    }
+
+    function onErrorListener(err) {
+      console.log('XHR Error :', err);
+    }
+
+    request.onload = onLoadListener;
+    request.onerror = onErrorListener;
+    request.open('get', 'url', true);
+    request.send();
   });
 };
