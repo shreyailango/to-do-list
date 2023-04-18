@@ -275,8 +275,8 @@ const Controller = ((view, model) => {
       if (event.target.parentNode.className === 'delete-btn') {
         const id = Number(event.target.parentNode.id);
         console.log('id', typeof id);
-        model.deleteTodo(+id).then((data) => {
-          state.todos = state.todos.filter((todo) => todo.id !== +id);
+        model.deleteTodo(id).then((data) => {
+          state.todos = state.todos.filter((todo) => todo.id !== id);
         });
       }
     });
