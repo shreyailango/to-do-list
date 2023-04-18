@@ -50,7 +50,7 @@ const APIs = (() => {
   };
 
   const getTodos = () => {
-    return Fetch('http://localhost:3000/todos').then((res) => res.json());
+    return fetch('http://localhost:3000/todos').then((res) => res.json());
   };
 
   const updateTodo = (data, id) => {
@@ -58,11 +58,11 @@ const APIs = (() => {
     return fetch('http://localhost:3000/todos/' + id, {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'text/plain',
+        'Content-type': 'application/json; charset=UTF-8',
       },
-      body: {
+      body: JSON.stringify({
         content: data,
-      },
+      }),
     })
       .then((response) => response.json())
       .then((json) => console.log(json));
@@ -261,7 +261,6 @@ const Controller = ((view, model) => {
           3. update view, remove
       */
     view.todolistEl.addEventListener('click', (event) => {
-      console.log('checkin on completed = ', event.target.parentNode.className);
       if (event.target.parentNode.className === 'delete-btn') {
         const id = Number(event.target.parentNode.id);
         console.log('id', typeof id);
